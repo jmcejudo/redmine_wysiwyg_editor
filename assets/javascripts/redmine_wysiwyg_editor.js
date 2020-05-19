@@ -987,6 +987,17 @@ RedmineWysiwygEditor.prototype._toTextTextile = function(content) {
     return (attr.length > 0) ? attr.join('') + '.' : '';
   };
 
+  var linkUri = function(url) {
+    if (/^\\\\/.test(url)) {
+      // Convert UNC path to URL
+      return 'file:/' + url.split('\\').map(function(s) {
+        return encodeURIComponent(s);
+      }).join('/');
+    }
+
+    return url;
+  };
+
   var NT = '<notextile></notextile>';
 
   var converters = [{
@@ -1079,7 +1090,7 @@ RedmineWysiwygEditor.prototype._toTextTextile = function(content) {
         return gluableContent(content, node, ' ');
       } else {
         var titlePart = node.title ? ' (' + node.title + ')' : '';
-        var c = '"' + content +  titlePart + '":' + href;
+        var c = '"' + content +  titlePart + '":' + linkUri(href);
 
         return gluableContent(c, node, NT);
       }

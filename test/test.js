@@ -124,6 +124,13 @@ suite('Redmine WYSIWYG Editor', function() {
       assert.equal(x._toTextTextile(content), expected);
     });
 
+    test('UNC path link', function() {
+      var content = '<a href="\\\\server\\path\\to\\the file">\\\\server\\path\\to\\the file</a>';
+      var expected = '"\\\\server\\path\\to\\the file":file:///server/path/to/the%20file';
+
+      assert.equal(x._toTextTextile(content), expected);
+    });
+
     test('Abbreviation', function() {
       var content = '<abbr title="Richard Matthew Stallman">RMS</abbr>';
       var expected = 'RMS(Richard Matthew Stallman)';
